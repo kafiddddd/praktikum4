@@ -35,7 +35,8 @@ btn-outline-light my-2 ms-md-auto"><i
         </div>
     </nav>
     <div class="container-sm mt-5">
-        <form action="{{ route('employees.store') }}" class="needs-validation was-validated" method="POST" novalidate="">
+        <form action="{{ route('employees.store') }}" method="POST"
+            novalidate="">
             @csrf
             <div class="row justify-content-center">
                 <div class="p-5 bg-light rounded-3 border col-xl-6">
@@ -45,38 +46,60 @@ btn-outline-light my-2 ms-md-auto"><i
                     </div>
                     <hr>
                     <div class="row">
+                        {{-- @dd($errors) --}}
                         <div class="col-md-6 mb-3">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input class="form-control @error('firstName') is-invalid @enderror" type="text" name="firstName" id="firstName" value="{{old('firstName')}}"
+                            <input class="form-control @if($errors->has('firstName')) is-invalid @endif" type="text"
+                                name="firstName" id="firstName" value="{{ old('firstName') }}"
                                 placeholder="Enter First Name" required="">
-                                @error('firstName')
-                                    <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
+                            @if($errors->has('firstName'))
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                            @endif
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="lastName" class="form-label">Last
                                 Name</label>
-                            <input class="form-control  @error('lastName') is-invalid @enderror" type="text" name="lastName" id="lastName" value="{{old('lastName')}}"
+                            <input class="form-control  @error('lastName') is-invalid @enderror" type="text"
+                                name="lastName" id="lastName" value="{{ old('lastName') }}"
                                 placeholder="Enter Last Name" required="">
-                                @error('lastName')
-                                    <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
+                            @error('lastName')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input class="form-control  @error('email') is-invalid @enderror" type="text" name="email" id="email" value="{{old('email')}}"
-                                placeholder="Enter Email" required="">
-                                @error('email')
-                                    <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
+                            <input class="form-control  @error('email') is-invalid @enderror" type="text"
+                                name="email" id="email" value="{{ old('email') }}" placeholder="Enter Email"
+                                required="">
+                            @error('email')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="age" class="form-label">Age</label>
-                            <input class="form-control  @error('age') is-invalid @enderror" type="text" name="age" id="age" value="{{old('age')}}"
-                                placeholder="Enter Age" required="">
-                                @error('age')
-                                    <div class="invalid-feedback"> {{ $message }}</div>
-                                @enderror
+                            <input class="form-control  @error('age') is-invalid @enderror" type="text"
+                                name="age" id="age" value="{{ old('age') }}" placeholder="Enter Age"
+                                required="">
+                            @error('age')
+                                <div class="invalid-feedback"> {{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="position" class="form-label">Position</label>
+                            <select name="position" id="position" class="form-select">
+                                @foreach ($positions as $position)
+                                    <option value="{{ $position->id }}"
+                                        {{ old('position') == $position->id ? 'selected' : '' }}>
+                                        {{ $position->code .
+                                            ' -
+                                                                    ' .
+                                            $position->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('position')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
                         </div>
                     </div>
                     <hr>
@@ -88,7 +111,8 @@ me-2"></i> Cancel</a>
                         </div>
                         <div class="col-md-6 d-grid">
                             <button type="submit" class="btn btn-dark
-btn-lg mt-3"><i class="bi-check-circle me-2"></i>
+btn-lg mt-3"><i
+                                    class="bi-check-circle me-2"></i>
                                 Save</button>
                         </div>
                     </div>
